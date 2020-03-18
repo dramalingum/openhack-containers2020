@@ -42,6 +42,6 @@ spec:
   selector:
     app: poi-pod
   ports:
-  - port: 8080
+  - port: 80801
     targetPort: 80
   type: LoadBalancer
