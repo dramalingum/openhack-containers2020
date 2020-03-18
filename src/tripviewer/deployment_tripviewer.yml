@@ -16,9 +16,9 @@ spec:
         image: registryqaz7211.azurecr.io/tripinsights/tripviewer:1.0
         env:
         - name: USERPROFILE_API_ENDPOINT
-          value: "http://userprofile-service.default.svc.cluster.local:8080"
+          value: "http://userprofile-service.default.svc.cluster.local:80"
         - name: TRIPS_API_ENDPOINT
-          value: "http://trips-service.default.svc.cluster.local:8080"
+          value: "http://trips-service.default.svc.cluster.local:80"
         - name: BING_MAPS_KEY
           value: ""
         resources:
