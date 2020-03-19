@@ -1,6 +1,6 @@
 :
 
-aksname="aks-secure"
+aksname="aks-prod"
 
 # Create the Azure AD application
 serverApplicationId=$(az ad app create \
@@ -19,6 +19,7 @@ serverApplicationSecret=$(az ad sp credential reset \
     --name $serverApplicationId \
     --credential-description "AKSPassword" \
     --query password -o tsv)
+echo $serverApplicationSecret
 
 az ad app permission add \
     --id $serverApplicationId \
@@ -33,6 +34,7 @@ clientApplicationId=$(az ad app create \
     --native-app \
     --reply-urls "https://${aksname}Client" \
     --query appId -o tsv)
+echo $clientApplicationId
 
 az ad sp create --id $clientApplicationId
 
@@ -44,11 +46,12 @@ az ad app permission grant --id $clientApplicationId --api $serverApplicationId
 RGRP=teamResources
 
 tenantId=$(az account show --query tenantId -o tsv)
+echo $tenantId
 
-az ad sp create-for-rbac --skip-assignment --name myAKSClusterServicePrincipal
+az ad sp create-for-rbac --skip-assignment --name AKSProdSP
 
 
-az network vnet subnet list --resource-group $RGRP --vnet-name vnet --query "[0].id" --output tsv
+az network vnet subnet list --resource-group $RGRP --vnet-name vnet --query "[1].id" --output tsv
 
 
 #
@@ -56,10 +59,10 @@ az network vnet subnet list --resource-group $RGRP --vnet-name vnet --query "[0]
 RGRP=teamResources
 vmsubnetid="/subscriptions/91ae9c19-2591-4c54-9c4a-4bb90338d474/resourceGroups/teamResources/providers/Microsoft.Network/virtualNetworks/vnet/subnets/aks-subnet"
 
-SPN_ID="1380b4e6-7cf9-4ffc-b083-4f9943d36134"
-SPN_SECRET="1a79ab28-c7ad-4fe0-93eb-cfce1625d5a1"
+SPN_ID="a13472ec-0632-4792-8606-677044e1084f"
+SPN_SECRET="c741bb1a-d6e1-4d14-8b03-f57e27484d06"
 
-SNET_ID="/subscriptions/91ae9c19-2591-4c54-9c4a-4bb90338d474/resourceGroups/teamResources/providers/Microsoft.Network/virtualNetworks/vnet/subnets/new-aks-subnet"
+SNET_ID="/subscriptions/91ae9c19-2591-4c54-9c4a-4bb90338d474/resourceGroups/teamResources/providers/Microsoft.Network/virtualNetworks/vnet/subnets/aks-subnet"
 
 az role assignment create --assignee $SPN_ID --scope $SNET_ID --role Contributor
 
@@ -75,16 +78,15 @@ az aks create \
     --network-plugin azure \
     --vnet-subnet-id $vmsubnetid \
     --docker-bridge-address 172.17.0.1/16 \
-    --dns-service-ip 10.2.2.10 \
-    --service-cidr 10.2.5.0/24 \
+    --dns-service-ip 172.38.0.10 \
+    --service-cidr 172.38.0.0/16 \
     --generate-ssh-keys \
     --aad-server-app-id $serverApplicationId \
     --aad-server-app-secret $serverApplicationSecret \
     --aad-client-app-id $clientApplicationId \
     --aad-tenant-id $tenantId \
     --service-principal $SPN_ID \
-    --client-secret {SPN_SECRET} 
-
+    --client-secret $SPN_SECRET
 
 #az aks create \
 #    --resource-group $RGRIP \

@@ -4,8 +4,16 @@ output of :  az ad sp create-for-rbac --skip-assignment --name myAKSClusterServi
   "appId": "1380b4e6-7cf9-4ffc-b083-4f9943d36134",
   "displayName": "myAKSClusterServicePrincipal",
   "name": "http://myAKSClusterServicePrincipal",
-  "password": "1a79ab28-c7ad-4fe0-93eb-cfce1625d5a1",
+  "password": "83077ce2-1d2f-4506-b3d3-acec0d6f4789",
   "tenant": "e12892b6-7862-42d2-9e6f-c36d23a32018"
 }
 
 
+
+{
+  "appId": "a13472ec-0632-4792-8606-677044e1084f",
+  "displayName": "AKSProdSP",
+  "name": "http://AKSProdSP",
+  "password": "c741bb1a-d6e1-4d14-8b03-f57e27484d06",
+  "tenant": "e12892b6-7862-42d2-9e6f-c36d23a32018"
+}

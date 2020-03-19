@@ -1,9 +1,20 @@
-serverApplicationId="65830b7f-f893-4fef-a1cc-5b67336524bc"
-serverApplicationSecret="f7832a2a-3c1f-4007-92e8-c5947ab9605f"
-clientApplicationId="046b950b-f4dc-483c-b6a1-c6b1cf0d7b54"
+serverApplicationId="a0a428da-2139-4180-9485-5e4d8cf0d5f5"
+serverApplicationSecret="611689b9-6f75-43f3-9656-2a3bd20ed844"
+clientApplicationId="acc0d8e5-1992-4cbe-8d47-ba280105ca72"
 tenantId="e12892b6-7862-42d2-9e6f-c36d23a32018"
 
+{
+  "appId": "1380b4e6-7cf9-4ffc-b083-4f9943d36134",
+  "displayName": "myAKSClusterServicePrincipal",
+  "name": "http://myAKSClusterServicePrincipal",
+  "password": "83077ce2-1d2f-4506-b3d3-acec0d6f4789",
+  "tenant": "e12892b6-7862-42d2-9e6f-c36d23a32018"
+}
+
+
+
 RGRP=teamResources
+aksname="aks-secure"
 vmsubnetid="/subscriptions/91ae9c19-2591-4c54-9c4a-4bb90338d474/resourceGroups/teamResources/providers/Microsoft.Network/virtualNetworks/vnet/subnets/aks-subnet"
 
 SPN_ID="1380b4e6-7cf9-4ffc-b083-4f9943d36134"
@@ -23,8 +34,8 @@ az aks create \
     --network-plugin azure \
     --vnet-subnet-id $vmsubnetid \
     --docker-bridge-address 172.17.0.1/16 \
-    --dns-service-ip 10.2.2.10 \
-    --service-cidr 10.2.2.0/24 \
+    --dns-service-ip 172.38.0.10 \
+    --service-cidr 172.38.0.0/16 \
     --generate-ssh-keys \
     --aad-server-app-id $serverApplicationId \
     --aad-server-app-secret $serverApplicationSecret \
