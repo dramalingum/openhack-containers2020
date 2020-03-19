@@ -1,24 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-java-deployment
+  name: trips-deployment
   namespace: api
 spec:
   selector:
     matchLabels:
-      app: user-java-pod
+      app: trips-pod
   template:
     metadata:
       labels:
-        app: user-java-pod
+        app: trips-pod
     spec:
-      hostname: user-java-container 
       containers:
-      - name: user-java-container
-        image: registryqaz7211.azurecr.io/tripinsights/user-java:1.0
+      - name: trips-container
+        image: registryqaz7211.azurecr.io/tripinsights/trips:1.0
         env:
-        - name: PORT
-          value: "80"
         - name: SQL_USER
           value: "sqladminqAz7211"
         - name: SQL_PASSWORD
@@ -27,19 +24,25 @@ spec:
           value: "sqlserverqaz7211.database.windows.net"
         - name: SQL_DBNAME
           value: "mydrivingDB"
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
         ports:
         - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-java-service
+  name: trips-service
   namespace: api
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"  
 spec:
   selector:
-    app: user-java-pod
+    app: trips-pod
   ports:
   - port: 80
     targetPort: 80
