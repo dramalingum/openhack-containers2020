@@ -1,0 +1,1 @@
+/subscriptions/91ae9c19-2591-4c54-9c4a-4bb90338d474/resourceGroups/teamResources/providers/Microsoft.Network/virtualNetworks/vnet/subnets/aks-subnet

@@ -1,0 +1,35 @@
+serverApplicationId="65830b7f-f893-4fef-a1cc-5b67336524bc"
+serverApplicationSecret="f7832a2a-3c1f-4007-92e8-c5947ab9605f"
+clientApplicationId="046b950b-f4dc-483c-b6a1-c6b1cf0d7b54"
+tenantId="e12892b6-7862-42d2-9e6f-c36d23a32018"
+
+RGRP=teamResources
+vmsubnetid="/subscriptions/91ae9c19-2591-4c54-9c4a-4bb90338d474/resourceGroups/teamResources/providers/Microsoft.Network/virtualNetworks/vnet/subnets/aks-subnet"
+
+SPN_ID="1380b4e6-7cf9-4ffc-b083-4f9943d36134"
+SPN_SECRET="1a79ab28-c7ad-4fe0-93eb-cfce1625d5a1"
+
+az role assignment create --assignee $SPN_ID --scope $vmsubnetid --role Contributor
+
+echo $serverApplicationId
+echo $serverApplicationSecret
+echo $clientApplicationId
+echo $tenantId
+
+az aks create \
+    --resource-group $RGRP \
+    --name $aksname \
+    --node-count 1 \
+    --network-plugin azure \
+    --vnet-subnet-id $vmsubnetid \
+    --docker-bridge-address 172.17.0.1/16 \
+    --dns-service-ip 10.2.2.10 \
+    --service-cidr 10.2.2.0/24 \
+    --generate-ssh-keys \
+    --aad-server-app-id $serverApplicationId \
+    --aad-server-app-secret $serverApplicationSecret \
+    --aad-client-app-id $clientApplicationId \
+    --aad-tenant-id $tenantId \
+    --service-principal $SPN_ID \
+    --client-secret {SPN_SECRET}
+
