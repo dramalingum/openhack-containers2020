@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: kv
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: test
+          mountPath: /kvmnt
+          readOnly: true
+      volumes:
+      - name: test
+        flexVolume:
+          driver: "azure/kv"
+          secretRef:
+            name: kvcreds                                                # [OPTIONAL] not required if using Pod Identity
+          options:
+            usepodidentity: "false"                                      # [OPTIONAL] if not provided, will default to "false"
+            usevmmanagedidentity: "false"                                # [OPTIONAL new in version >= v0.0.15] if not provided, will default to "false"
+            vmmanagedidentityclientid: "clientid"                        # [OPTIONAL new in version >= v0.0.15] use the client id to specify which user assigned managed identity to use, leave empty to use system assigned managed identity
+            keyvaultname: "T1VeyVault"                                   # [REQUIRED] the name of the KeyVault
+            keyvaultobjectnames: "SQLDBNAME;SQLPASSWORD;SQLSERVER;SQLUSER"       # [REQUIRED] list of KeyVault object names (semi-colon separated)
+            keyvaultobjecttypes: "secret;secret;secret;secret"    
+            keyvaultobjectaliases: "SQL_DBNAME;SQL_PASSWORD;SQL_SERVER;SQL_USER" 
+            resourcegroup: "teamResources"                             
+            subscriptionid: "91ae9c19-2591-4c54-9c4a-4bb90338d474"    
+            tenantid: "e12892b6-7862-42d2-9e6f-c36d23a32018"         
+
