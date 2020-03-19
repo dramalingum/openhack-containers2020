@@ -1,19 +1,20 @@
+NSPACE="api"
 
 # Deploy KV FlexVolume to exiting cluster
 kubectl create -f https://raw.githubusercontent.com/Azure/kubernetes-keyvault-flexvol/master/deployment/kv-flexvol-installer.yaml
 
 # Validate it's working
-kubectl get pods -n kv
+kubectl get pods -n $NSPACE
 
 # Using keyvault-flexvolume in a cluster with pod security policy enabled, so creatng the following policy that enables the spec required for keyvault-flexvolume to work -
 kubectl apply -f https://raw.githubusercontent.com/Azure/kubernetes-keyvault-flexvol/master/deployment/kv-flexvol-psp.yaml
 
 # Add service principal credentials as Kubernetes secrets accessible by the Key Vault FlexVolume driver.
 
-SPN_ID="1380b4e6-7cf9-4ffc-b083-4f9943d36134"
-SPN_SECRET="1a79ab28-c7ad-4fe0-93eb-cfce1625d5a1"
+SPN_ID="a13472ec-0632-4792-8606-677044e1084f"
+SPN_SECRET="c741bb1a-d6e1-4d14-8b03-f57e27484d06"
 
-kubectl create secret generic kvcreds --from-literal clientid=$SPN_ID --from-literal clientsecret=SPN_SECRET --type=azure/kv
+kubectl create secret generic kvcreds --from-literal clientid=$SPN_ID --from-literal clientsecret=$SPN_SECRET --type=azure/kv -n $NSPACE
 
 # Ensurng this service principal has all the required permissions to access content in the Key Vault instance.
 
