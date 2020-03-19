@@ -25,11 +25,7 @@ spec:
         - name: SQL_DBNAME
           value: "mydrivingDB"
         - name: ASPNETCORE_ENVIRONMENT
-          value: "Production"
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+          value: "Production"        
         ports:
         - containerPort: 80
 ---

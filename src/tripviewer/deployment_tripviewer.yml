@@ -22,10 +22,6 @@ spec:
           value: "http://trips-service.api.svc.cluster.local"
         - name: BING_MAPS_KEY
           value: ""
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
         ports:
         - containerPort: 80
 ---
