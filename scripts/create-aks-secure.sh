@@ -88,15 +88,25 @@ az aks create \
     --service-principal $SPN_ID \
     --client-secret $SPN_SECRET
 
-#az aks create \
-#    --resource-group $RGRIP \
-#    --name $aksname \
-#    --node-count 1 \
-#    --generate-ssh-keys \
-#    --aad-server-app-id $serverApplicationId \
-#    --aad-server-app-secret $serverApplicationSecret \
-#    --aad-client-app-id $clientApplicationId \
-#    --aad-tenant-id $tenantId
+
+
+# RBAC
+
+#To get cluster admin creds (--admin). Normally gets cluster user creds
+az aks get-credentials --resource-group $RGRP --name $aksname --admin
+
+#Get my upn
+az ad signed-in-user show --query userPrincipalName -o tsv
+
+# Update the aad-role-bindings.yml - add UPN
+kubectl apply -f basic-azure-ad-binding.yaml
+
+#Get creds from the new cluster based ob the role bindings
+az aks get-credentials --resource-group $RGRP --name $aksname --overwrite-existing
+
+#Test
+kubectl get pods --all-namespaces
+
 
 
 
