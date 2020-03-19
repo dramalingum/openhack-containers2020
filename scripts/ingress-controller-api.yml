@@ -1,0 +1,83 @@
+apiVersion: networking.k8s.io/v1beta1 # for versions before 1.14 use extensions/v1beta1
+kind: Ingress
+metadata:
+  name: apiingress
+  namespace: api
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: poi-service
+          servicePort: 80
+        path: /api/docs/poi
+      - backend:
+          serviceName: poi-service
+          servicePort: 80
+        path: /api/poi/healthcheck
+      - backend:
+          serviceName: poi-service
+          servicePort: 80
+        path: /api/poi
+      - backend:
+          serviceName: poi-service
+          servicePort: 80
+        path: /swagger/docs/poi
+      - backend:
+          serviceName: trips-service
+          servicePort: 80
+        path: /api/trips
+      - backend:
+          serviceName: trips-service
+          servicePort: 80
+        path: /api/trips/healthcheck
+      - backend:
+          serviceName: trips-service
+          servicePort: 80
+        path: /api/trips/user
+      - backend:
+          serviceName: trips-service
+          servicePort: 80
+        path: /api/docs/trips
+      - backend:
+          serviceName: trips-service
+          servicePort: 80
+        path: /api/json
+      - backend:
+          serviceName: userprofile-service
+          servicePort: 80
+        path: /api/user
+      - backend:
+          serviceName: userprofile-service
+          servicePort: 80
+        path: /api/user/healthcheck
+      - backend:
+          serviceName: userprofile-service
+          servicePort: 80
+        path: /api/docs/user
+      - backend:
+          serviceName: user-java-service
+          servicePort: 80
+        path: /api/user-java
+      - backend:
+          serviceName: user-java-service
+          servicePort: 80
+        path: /api/user-java/healthcheck
+      - backend:
+          serviceName: user-java-service
+          servicePort: 80
+        path: /api/docs/user-java
+      - backend:
+          serviceName: user-java-service
+          servicePort: 80
+        path: /api/documentation/user-java
+      - backend:
+          serviceName: user-java-service
+          servicePort: 80
+        path: /api/swagger-resources
+      - backend:
+          serviceName: user-java-service
+          servicePort: 80
+        path: /api/api-docs
