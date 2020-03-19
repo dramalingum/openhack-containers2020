@@ -16,14 +16,6 @@ spec:
       - name: poi-container
         image: registryqaz7211.azurecr.io/tripinsights/poi:1.0
         env:
-        - name: SQL_USER
-          value: "sqladminqAz7211"
-        - name: SQL_PASSWORD
-          value: "kF3yk5Qp3"
-        - name: SQL_SERVER
-          value: "sqlserverqaz7211.database.windows.net"
-        - name: SQL_DBNAME
-          value: "mydrivingDB"
         - name: WEB_SERVER_BASE_URI
           value: "http://0.0.0.0"
         - name: WEB_PORT
@@ -35,7 +27,25 @@ spec:
             memory: "512Mi"
             cpu: "500m"
         ports:
-        - containerPort: 8080
+        - containerPort: 8080        
+        volumeMounts:
+        - name: keyvault
+          mountPath: /secrets
+          readOnly: true
+      volumes:
+      - name: keyvault
+        flexVolume:
+          driver: "azure/kv"
+          secretRef:
+            name: kvcreds
+          options:
+            keyvaultname: "T1VeyVault"
+            keyvaultobjectnames: "SQLUSER;SQLPASSWORD;SQLSERVER;SQLDBNAME"
+            keyvaultobjecttypes: "secret;secret;secret;secret"
+            keyvaultobjectaliases: "SQL_USER;SQL_PASSWORD;SQL_SERVER;SQL_DBNAME"
+            resourcegroup: "teamResources"
+            subscriptionid: 91ae9c19-2591-4c54-9c4a-4bb90338d474
+            tenantid: "e12892b6-7862-42d2-9e6f-c36d23a32018"
 ---
 apiVersion: v1
 kind: Service
