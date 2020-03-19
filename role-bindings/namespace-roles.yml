@@ -1,0 +1,39 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: api-namespace-viewer
+  namespace: api
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "deployments"]
+  verbs: ["get", "list", "watch"]
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: api-namespace-update
+  namespace: api
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "deployments"]
+  verbs: ["update", "patch", "create", "get" , "list", "watch"]
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: web-namespace-viewer
+  namespace: web
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "deployments"]
+  verbs: ["get", "list", "watch"]
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: web-namespace-update
+  namespace: web
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "deployments"]
+  verbs: ["update", "patch", "create", "get" , "list", "watch"]

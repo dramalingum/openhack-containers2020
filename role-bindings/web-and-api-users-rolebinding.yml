@@ -1,0 +1,55 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: api-viewer-rbac1
+  namespace: api
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: api-namespace-viewer
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: "102b4665-5345-421e-a960-98ab6baa6296"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: api-update-rbac1
+  namespace: api
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: api-namespace-update
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: "68f18437-fa95-4e74-b382-61aa9c77a5ca"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: web-viewer-rbac1
+  namespace: web
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: web-namespace-viewer
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: "68f18437-fa95-4e74-b382-61aa9c77a5ca"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: web-update-rbac1
+  namespace: web
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: web-namespace-update
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: "102b4665-5345-421e-a960-98ab6baa6296"
